@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-
+import { supabase } from './config/supabase';
 // Import routes
 import authRoutes from './controllers/auth.controller';
 import folderRoutes from './controllers/folders.controller';
@@ -35,12 +35,14 @@ app.use((req, res, next) => {
 });
 
 // Health check
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    timestamp: new Date().toISOString(),
-    service: 'cloud-drive-backend'
-  });
+// Health check — keep Render + Supabase alive
+app.get('/api/health', async (req, res) => {
+  try {
+    await supabase.from('test').select('message').limit(1).single();
+    res.status(200).json({ alive: true, db: 'connected' });
+  } catch (err) {
+    res.status(200).json({ alive: true, db: 'error' });
+  }
 });
 
 // API Routes

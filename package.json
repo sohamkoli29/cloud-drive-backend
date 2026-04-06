@@ -27,6 +27,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@tsconfig/node18": "^18.2.6",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
